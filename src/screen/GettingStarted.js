@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, StatusBar } from "react-native";
 import { CustomButton, Logo } from "../components";
 import { COLORS, DIM } from "../constants";
 
 export default function GettingStarted({ navigation }) {
 	return (
 		<View style={styles.container}>
+			<StatusBar barStyle="dark-content" backgroundColor="white" />
 			<Logo customStyle={styles.custom} />
 			<Text style={styles.appName}>Appname</Text>
 			<View
