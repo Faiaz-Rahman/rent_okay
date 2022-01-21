@@ -5,7 +5,10 @@ import { Header } from "../components";
 export default function Wishlist({ navigation }) {
 	return (
 		<View style={styles.container}>
-			<Header leftIcon={() => navigation.toggleDrawer()} text={"Wishlist"} />
+			<Header
+				leftIconOnPress={() => navigation.toggleDrawer()}
+				text={"Wishlist"}
+			/>
 		</View>
 	);
 }

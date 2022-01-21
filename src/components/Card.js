@@ -1,64 +1,67 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+	Image,
+	StyleSheet,
+	Text,
+	TouchableOpacity,
+	View,
+	TouchableWithoutFeedback,
+} from "react-native";
 import React from "react";
 import { COLORS, DIM } from "../constants";
 
 import { Rating } from "react-native-ratings";
 
-export default function Card({ val }) {
+export default function Card({ val, onPress }) {
 	return (
-		<View style={styles.card}>
-			<View style={styles.imageContainer}>
-				<Image
-					source={{ uri: val.src }}
-					style={{
-						height: "100%",
-						width: "100%",
-					}}
-					resizeMode={"cover"}
-				/>
-			</View>
-			<View style={styles.description}>
-				<Text style={styles.author}>
-					AUTHOR:{"\n"}
-					{val.author}
-				</Text>
-				<View style={styles.ownerContainer}>
-					<Text style={styles.owner}>OWNER: {val.owner}</Text>
-				</View>
-				<View style={styles.rentContainer}>
-					<Text style={styles.rentText}>RENT: </Text>
-					<Text style={styles.rentText}>{val.rent}</Text>
-				</View>
-				<View
-					style={{
-						alignItems: "center",
-						flexDirection: "row",
-						width: "100%",
-					}}
-				>
-					<View style={styles.ratingCardContainer}>
-						<Text style={styles.ratingCard}>Rating</Text>
+		<>
+			<View style={styles.margin} />
+			<TouchableOpacity style={styles.card} onPress={onPress}>
+				<>
+					<View style={styles.imageContainer}>
+						<Image
+							source={{ uri: val.src }}
+							style={{
+								height: "100%",
+								width: "100%",
+							}}
+							resizeMode={"cover"}
+						/>
 					</View>
-					<Rating
-						type="star"
-						fractions={1}
-						ratingCount={5}
-						imageSize={25}
-						showRating={false}
-						readonly={true}
-						ratingColor={COLORS.primary}
-						ratingTextColor="#000"
-						ratingBackgroundColor={COLORS.primary}
-						selectedColor={COLORS.primary}
-						startingValue={val.rating}
-						style={{
-							paddingTop: 15,
-							paddingLeft: 10,
-						}}
-					/>
-				</View>
-			</View>
-		</View>
+					<View style={styles.description}>
+						<Text style={styles.author}>
+							AUTHOR:{"\n"}
+							{val.author}
+						</Text>
+						<View style={styles.ownerContainer}>
+							<Text style={styles.owner}>OWNER: {val.owner}</Text>
+						</View>
+						<View style={styles.rentContainer}>
+							<Text style={styles.rentText}>RENT: </Text>
+							<Text style={styles.rentText}>{val.rent}</Text>
+						</View>
+						<View style={styles.ratingMainContainer}>
+							<View style={styles.ratingCardContainer}>
+								<Text style={styles.ratingCard}>Rating</Text>
+							</View>
+							<Rating
+								type="star"
+								fractions={1}
+								ratingCount={5}
+								imageSize={25}
+								showRating={false}
+								readonly={true}
+								ratingColor={COLORS.primary}
+								ratingTextColor="#000"
+								ratingBackgroundColor={COLORS.primary}
+								selectedColor={COLORS.primary}
+								startingValue={val.rating}
+								style={styles.rating}
+							/>
+						</View>
+					</View>
+				</>
+			</TouchableOpacity>
+		</>
 	);
 }
 
@@ -115,6 +118,10 @@ const styles = StyleSheet.create({
 		paddingBottom: 5,
 		// backgroundColor: "purple",
 	},
+	rating: {
+		paddingTop: 15,
+		paddingLeft: 10,
+	},
 	ratingCard: {
 		fontSize: 17,
 		color: COLORS.white,
@@ -128,6 +135,12 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		marginTop: 15,
 		borderRadius: 6,
+	},
+	ratingMainContainer: {
+		alignItems: "center",
+		flexDirection: "row",
+		width: "100%",
+		// backgroundColor: "pink",
 	},
 	rentContainer: {
 		flexDirection: "row",

@@ -1,24 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { CustomTextInput, CustomButton } from "../components/";
+import {
+	StyleSheet,
+	Text,
+	View,
+	TouchableOpacity,
+	Animated,
+} from "react-native";
+import { CustomTextInput, CustomButton, Logo } from "../components/";
 
 import { COLORS, DIM } from "../constants";
 
 export default function LoginScreen({ navigation }) {
 	const [email, setEmail] = useState("");
 	const [pass, setPass] = useState("");
+
+	const animation = useRef(new Animated.Value(0)).current;
+
+	const animatedStyles = {
+		transform: [{ scale: animation }],
+	};
+
+	useEffect(() => {
+		Animated.timing(animation, {
+			toValue: 1,
+			duration: 500,
+			useNativeDriver: false,
+		}).start();
+	}, []);
+
 	return (
 		<View style={styles.container}>
-			<Text
-				style={{
-					fontSize: 35,
-					fontWeight: "900",
-					marginBottom: 20,
-				}}
-			>
-				Login
-			</Text>
+			<Animated.View style={animatedStyles}>
+				<Logo />
+			</Animated.View>
+			<Text style={styles.header}>Login</Text>
 			<CustomTextInput
 				text="Enter the email"
 				iconName="mail"
@@ -61,9 +77,9 @@ export default function LoginScreen({ navigation }) {
 
 const styles = StyleSheet.create({
 	accountText: {
-		fontSize: 15,
+		fontSize: 16,
 		color: "#170208",
-		fontWeight: "bold",
+		fontWeight: "900",
 		letterSpacing: 0.4,
 	},
 	container: {
@@ -89,8 +105,13 @@ const styles = StyleSheet.create({
 	forgotText: {
 		color: COLORS.primary,
 		fontSize: 16,
-		fontWeight: "bold",
+		fontWeight: "900",
 		letterSpacing: 1.5,
+	},
+	header: {
+		fontSize: 35,
+		fontWeight: "bold",
+		marginBottom: 20,
 	},
 	register: {
 		color: COLORS.primary,

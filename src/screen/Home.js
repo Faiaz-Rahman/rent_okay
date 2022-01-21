@@ -1,140 +1,39 @@
-import React from "react";
-import {
-	StatusBar,
-	StyleSheet,
-	Text,
-	View,
-	SafeAreaView,
-	ScrollView,
-	Image,
-} from "react-native";
-import { Rating } from "react-native-ratings";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 
-import { Header } from "../components";
+import { Header, Card } from "../components";
 import { COLORS, DIM, Data } from "../constants";
 
 export default function Home({ navigation }) {
-	const ratingCompleted = (rating) => {
-		// console.log("Rating is: " + rating);
-	};
+	const [searchBoxVisible, setSearchBoxVisible] = useState(false);
+	const [searchText, setSearchText] = useState(null);
+
+	useEffect(() => {
+		console.log(searchText);
+		return () => setSearchBoxVisible(false);
+	}, []);
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header
-				leftIcon={() => navigation.toggleDrawer()}
+				leftIconOnPress={() => navigation.toggleDrawer()}
 				text={"Browse Books"}
+				rightIconOnPress={() => setSearchBoxVisible(!searchBoxVisible)}
+				searchBoxVisible={searchBoxVisible}
+				search={(text) => setSearchText(text)}
 			/>
 			<ScrollView
 				showsVerticalScrollIndicator={false}
-				contentContainerStyle={{
-					paddingBottom: 100,
-					paddingTop: 10,
-					paddingLeft: 10,
-					paddingRight: 10,
-					width: DIM.width,
-				}}
+				contentContainerStyle={styles.scrollView}
 				pagingEnabled
 			>
 				{Data.map((val, index) => {
 					return (
-						<React.Fragment>
-							<View
-								key={index + 1}
-								style={{
-									backgroundColor: COLORS.slate,
-									height: 2,
-									width: DIM.width * 0.9,
-									alignSelf: "center",
-								}}
-							/>
-							<View key={index} style={styles.card}>
-								<View style={styles.imageContainer}>
-									<Image
-										source={{ uri: val.src }}
-										style={{
-											height: "100%",
-											width: "100%",
-										}}
-										resizeMode={"cover"}
-									/>
-								</View>
-								<View style={styles.description}>
-									<Text style={styles.author}>
-										AUTHOR:{"\n"}
-										{val.author}
-									</Text>
-									<View
-										style={{
-											height: DIM.height * 0.05,
-											paddingTop: 5,
-											paddingBottom: 5,
-										}}
-									>
-										<Text style={styles.owner}>OWNER: {val.owner}</Text>
-									</View>
-									<View
-										style={{
-											flexDirection: "row",
-											height: 40,
-											width: "90%",
-											backgroundColor: COLORS.primary,
-											padding: 10,
-											borderRadius: 7,
-										}}
-									>
-										<Text style={styles.rentText}>RENT: </Text>
-										<Text style={styles.rentText}>{val.rent}</Text>
-									</View>
-									<View
-										style={{
-											alignItems: "center",
-											flexDirection: "row",
-											width: "100%",
-										}}
-									>
-										<View
-											style={{
-												backgroundColor: COLORS.primary,
-												height: 35,
-												width: 60,
-												justifyContent: "center",
-												alignItems: "center",
-												marginTop: 15,
-												borderRadius: 6,
-											}}
-										>
-											<Text
-												style={{
-													fontSize: 17,
-													color: COLORS.white,
-													fontWeight: "bold",
-												}}
-											>
-												Rating
-											</Text>
-										</View>
-										<Rating
-											type="star"
-											fractions={1}
-											ratingCount={5}
-											imageSize={25}
-											showRating={false}
-											readonly={true}
-											ratingColor={COLORS.primary}
-											ratingTextColor="#000"
-											// tintColor={COLORS.slate}
-											ratingBackgroundColor={COLORS.primary}
-											selectedColor={COLORS.primary}
-											startingValue={val.rating}
-											style={{
-												paddingTop: 15,
-												paddingLeft: 10,
-											}}
-										/>
-									</View>
-								</View>
-							</View>
-						</React.Fragment>
+						<Card
+							key={val.id}
+							val={val}
+							// onPress={() => console.log(searchText)}
+						/>
 					);
 				})}
 			</ScrollView>
@@ -183,10 +82,36 @@ const styles = StyleSheet.create({
 		fontWeight: "700",
 		letterSpacing: 1.5,
 	},
+	ownerContainer: {
+		height: DIM.height * 0.05,
+		paddingTop: 5,
+		paddingBottom: 5,
+		// backgroundColor: "purple",
+	},
+	ratingCard: {
+		fontSize: 17,
+		color: COLORS.white,
+		fontWeight: "bold",
+	},
+	rentContainer: {
+		flexDirection: "row",
+		height: 40,
+		width: "90%",
+		backgroundColor: COLORS.primary,
+		padding: 10,
+		borderRadius: 7,
+	},
 	rentText: {
 		color: COLORS.white,
 		fontSize: 17,
 		fontWeight: "bold",
 		letterSpacing: 3,
+	},
+	scrollView: {
+		paddingBottom: 100,
+		paddingTop: 10,
+		paddingLeft: 10,
+		paddingRight: 10,
+		width: DIM.width,
 	},
 });

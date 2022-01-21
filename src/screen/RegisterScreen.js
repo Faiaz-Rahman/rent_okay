@@ -1,11 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { CustomButton, CustomTextInput } from "../components";
-import { COLORS } from "../constants";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { CustomButton, CustomTextInput, Logo } from "../components";
+import { COLORS, DIM } from "../constants";
 
 export default function RegisterScreen() {
 	return (
-		<View style={styles.container}>
+		<ScrollView
+			showsVerticalScrollIndicator={false}
+			contentContainerStyle={styles.container}
+		>
+			<Logo />
 			<Text style={styles.header}>Register</Text>
 			<CustomTextInput
 				text="Enter your name"
@@ -41,23 +45,24 @@ export default function RegisterScreen() {
 					marginTop: 7,
 				}}
 			/>
-		</View>
+		</ScrollView>
 	);
 }
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
 		backgroundColor: COLORS.white,
+		paddingTop: DIM.height * 0.1,
+		paddingBottom: DIM.height * 0.1,
 	},
 	custom: {
 		marginBottom: 15,
 	},
 	header: {
 		fontSize: 35,
-		fontWeight: "900",
+		fontWeight: "bold",
 		marginBottom: 20,
 	},
 });

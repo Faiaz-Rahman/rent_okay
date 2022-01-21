@@ -3,6 +3,8 @@ import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Home, Profile, Wishlist } from "../screen";
 
+import { FontAwesome } from "@expo/vector-icons";
+
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigator = () => {
@@ -21,6 +23,9 @@ const DrawerNavigator = () => {
 						fontSize: 16,
 						fontWeight: "bold",
 					},
+					drawerIcon: () => {
+						return <FontAwesome name="home" size={30} color={"slategrey"} />;
+					},
 				}}
 			/>
 			<Drawer.Screen
@@ -32,6 +37,11 @@ const DrawerNavigator = () => {
 						fontSize: 16,
 						fontWeight: "bold",
 					},
+					drawerIcon: () => {
+						return (
+							<FontAwesome name="list-alt" size={25} color={"slategrey"} />
+						);
+					},
 				}}
 			/>
 			<Drawer.Screen
@@ -42,6 +52,11 @@ const DrawerNavigator = () => {
 					drawerLabelStyle: {
 						fontSize: 16,
 						fontWeight: "bold",
+					},
+					drawerIcon: () => {
+						return (
+							<FontAwesome name="user-circle-o" size={25} color={"slategrey"} />
+						);
 					},
 				}}
 			/>

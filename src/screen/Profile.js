@@ -6,7 +6,10 @@ import { COLORS } from "../constants";
 export default function Profile({ navigation }) {
 	return (
 		<View style={styles.container}>
-			<Header leftIcon={() => navigation.toggleDrawer()} text={"Profile"} />
+			<Header
+				leftIconOnPress={() => navigation.toggleDrawer()}
+				text={"Profile"}
+			/>
 		</View>
 	);
 }

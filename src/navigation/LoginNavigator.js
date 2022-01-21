@@ -31,6 +31,7 @@ const LoginNavigator = () => {
 				component={RegisterScreen}
 				options={{
 					headerShown: false,
+					animation: "fade_from_bottom",
 				}}
 			/>
 			<Stack.Screen
