@@ -29,7 +29,7 @@ export default function Home({ navigation }) {
 				{Data.map((val, index) => {
 					return (
 						<Card
-							key={val.id}
+							key={index}
 							val={val}
 							// onPress={() => console.log(searchText)}
 						/>
@@ -41,70 +41,10 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-	author: {
-		fontSize: 20,
-		fontStyle: "italic",
-		fontWeight: "bold",
-		color: "black",
-		letterSpacing: 2,
-	},
-	card: {
-		height: DIM.height * 0.35,
-		width: DIM.width,
-		marginBottom: 10,
-		// backgroundColor: COLORS.slate,
-		flexDirection: "row",
-		alignItems: "center",
-		paddingLeft: 14,
-		borderRadius: 7,
-	},
 	container: {
 		flex: 1,
 		paddingTop: 35,
 		backgroundColor: COLORS.white,
-	},
-	description: {
-		height: "100%",
-		width: "60%",
-		paddingLeft: 10,
-		paddingTop: 22,
-		// backgroundColor: "red",
-	},
-	imageContainer: {
-		width: DIM.width * 0.4,
-		height: DIM.height * 0.3,
-		// backgroundColor: "red",
-	},
-	owner: {
-		fontSize: 16,
-		color: "grey",
-		fontWeight: "700",
-		letterSpacing: 1.5,
-	},
-	ownerContainer: {
-		height: DIM.height * 0.05,
-		paddingTop: 5,
-		paddingBottom: 5,
-		// backgroundColor: "purple",
-	},
-	ratingCard: {
-		fontSize: 17,
-		color: COLORS.white,
-		fontWeight: "bold",
-	},
-	rentContainer: {
-		flexDirection: "row",
-		height: 40,
-		width: "90%",
-		backgroundColor: COLORS.primary,
-		padding: 10,
-		borderRadius: 7,
-	},
-	rentText: {
-		color: COLORS.white,
-		fontSize: 17,
-		fontWeight: "bold",
-		letterSpacing: 3,
 	},
 	scrollView: {
 		paddingBottom: 100,

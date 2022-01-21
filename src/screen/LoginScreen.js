@@ -58,7 +58,10 @@ export default function LoginScreen({ navigation }) {
 				customStyle={{
 					marginBottom: 10,
 				}}
-				onPress={() => navigation.navigate("drawer")}
+				onPress={() => {
+					if (email === "example@gmail.com" && pass === "123456")
+						navigation.navigate("drawer");
+				}}
 			/>
 			<View style={styles.signInTextContainer}>
 				<Text style={styles.accountText}>Don't have an account?</Text>

@@ -10,6 +10,7 @@ export const COLORS = {
 	black: "#000",
 	slate: "#D6DFE0",
 	primary: "#e40042",
+	light_primary: "#F181A1",
 };
 
 export const Data = [

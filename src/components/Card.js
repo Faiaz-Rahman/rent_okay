@@ -145,10 +145,10 @@ const styles = StyleSheet.create({
 	rentContainer: {
 		flexDirection: "row",
 		height: 40,
-		width: "90%",
+		width: "85%",
 		backgroundColor: COLORS.primary,
 		padding: 10,
-		borderRadius: 7,
+		borderRadius: 9,
 	},
 	rentText: {
 		color: COLORS.white,
