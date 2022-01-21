@@ -9,7 +9,6 @@ export default function Home({ navigation }) {
 	const [searchText, setSearchText] = useState(null);
 
 	useEffect(() => {
-		console.log(searchText);
 		return () => setSearchBoxVisible(false);
 	}, []);
 

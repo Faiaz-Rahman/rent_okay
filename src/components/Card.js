@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 	author: {
 		fontSize: 20,
 		fontStyle: "italic",
-		fontWeight: "bold",
+		fontWeight: "900",
 		color: "black",
 		letterSpacing: 2,
 	},
