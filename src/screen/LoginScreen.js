@@ -6,6 +6,7 @@ import {
 	View,
 	TouchableOpacity,
 	Animated,
+	StatusBar,
 } from "react-native";
 import { CustomTextInput, CustomButton, Logo } from "../components/";
 
@@ -24,13 +25,14 @@ export default function LoginScreen({ navigation }) {
 	useEffect(() => {
 		Animated.timing(animation, {
 			toValue: 1,
-			duration: 500,
+			duration: 600,
 			useNativeDriver: false,
 		}).start();
 	}, []);
 
 	return (
 		<View style={styles.container}>
+			<StatusBar barStyle="dark-content" backgroundColor="white" />
 			<Animated.View style={animatedStyles}>
 				<Logo />
 			</Animated.View>
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
 	forgotText: {
 		color: COLORS.primary,
 		fontSize: 16,
-		fontWeight: "900",
+		fontWeight: "bold",
 		letterSpacing: 1.5,
 	},
 	header: {

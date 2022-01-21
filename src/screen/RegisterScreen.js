@@ -1,5 +1,12 @@
-import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef } from "react";
+import {
+	ScrollView,
+	StyleSheet,
+	Text,
+	View,
+	Animated,
+	StatusBar,
+} from "react-native";
 
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -14,6 +21,24 @@ import {
 } from "../components";
 
 export default function RegisterScreen() {
+	const animation = useRef(new Animated.Value(0)).current;
+
+	const animatedStyles = {
+		transform: [
+			{
+				scale: animation,
+			},
+		],
+	};
+
+	useEffect(() => {
+		Animated.timing(animation, {
+			toValue: 1,
+			duration: 500,
+			useNativeDriver: false,
+		}).start();
+	}, []);
+
 	const validationSchema = yup.object().shape({
 		name: yup.string().required("Your name is required !"),
 		books_count: yup
@@ -35,7 +60,10 @@ export default function RegisterScreen() {
 			showsVerticalScrollIndicator={false}
 			contentContainerStyle={styles.container}
 		>
-			<Logo />
+			<StatusBar barStyle="dark-content" backgroundColor="white" />
+			<Animated.View style={animatedStyles}>
+				<Logo />
+			</Animated.View>
 			<Text style={styles.header}>Register</Text>
 			<Formik
 				initialValues={{
