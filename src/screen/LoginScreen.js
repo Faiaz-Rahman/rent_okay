@@ -61,8 +61,8 @@ export default function LoginScreen({ navigation }) {
 					marginBottom: 10,
 				}}
 				onPress={() => {
-					if (email === "example@gmail.com" && pass === "123456")
-						navigation.navigate("drawer");
+					// if (email === "example@gmail.com" && pass === "123456")
+					navigation.navigate("bottomTab");
 				}}
 			/>
 			<View style={styles.signInTextContainer}>

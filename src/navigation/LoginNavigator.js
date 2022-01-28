@@ -5,12 +5,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LoginScreen, RegisterScreen, GettingStarted } from "../screen/";
 
 import DrawerNavigator from "./DrawerNavigator";
+import BottomTabNavigator from "./BottomTabNavigator";
 
 const Stack = createNativeStackNavigator();
 
 const LoginNavigator = () => {
 	return (
-		<Stack.Navigator screenOptions={{}} initialRouteName="gettingStarted">
+		<Stack.Navigator initialRouteName="gettingStarted">
 			<Stack.Screen
 				name="gettingStarted"
 				component={GettingStarted}
@@ -34,9 +35,16 @@ const LoginNavigator = () => {
 					animation: "fade_from_bottom",
 				}}
 			/>
-			<Stack.Screen
+			{/* <Stack.Screen
 				name="drawer"
 				component={DrawerNavigator}
+				options={{
+					headerShown: false,
+				}}
+			/> */}
+			<Stack.Screen
+				name="bottomTab"
+				component={BottomTabNavigator}
 				options={{
 					headerShown: false,
 				}}

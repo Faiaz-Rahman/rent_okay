@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 
+import { useNavigationState } from "@react-navigation/native";
+
 import { Header, Card } from "../components";
 import { COLORS, DIM, Data } from "../constants";
 
@@ -8,14 +10,16 @@ export default function Home({ navigation }) {
 	const [searchBoxVisible, setSearchBoxVisible] = useState(false);
 	const [searchText, setSearchText] = useState(null);
 
+	const state = useNavigationState((state) => state.index);
+
 	useEffect(() => {
 		return () => setSearchBoxVisible(false);
-	}, []);
+	}, [state]);
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<Header
-				leftIconOnPress={() => navigation.toggleDrawer()}
+				leftIconOnPress={() => console.log("Location Icon pressed")}
 				text={"Browse Books"}
 				rightIconOnPress={() => setSearchBoxVisible(!searchBoxVisible)}
 				searchBoxVisible={searchBoxVisible}
@@ -24,14 +28,14 @@ export default function Home({ navigation }) {
 			<ScrollView
 				showsVerticalScrollIndicator={false}
 				contentContainerStyle={styles.scrollView}
-				pagingEnabled
+				scrollEventThrottle={1}
 			>
 				{Data.map((val, index) => {
 					return (
 						<Card
 							key={index}
 							val={val}
-							// onPress={() => console.log(searchText)}
+							onPress={() => navigation.navigate("details", val)}
 						/>
 					);
 				})}
@@ -43,11 +47,11 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		paddingTop: 35,
+		paddingTop: 30,
 		backgroundColor: COLORS.white,
 	},
 	scrollView: {
-		paddingBottom: 100,
+		paddingBottom: DIM.height * 0.1,
 		paddingTop: 10,
 		paddingLeft: 10,
 		paddingRight: 10,
