@@ -1,14 +1,16 @@
 import LoginScreen from "./LoginScreen";
 import RegisterScreen from "./RegisterScreen";
 import Home from "./Home";
-import Wishlist from "./Wishlist";
+import BookShelf from "./BookShelf";
 import Profile from "./Profile";
 import GettingStarted from "./GettingStarted";
 import Logout from "./Logout";
 import DetailsScreen from "./DetailsScreen";
+import AddToShelf from "./AddToShelf";
 
 export {
-	Wishlist,
+	AddToShelf,
+	BookShelf,
 	GettingStarted,
 	Logout,
 	LoginScreen,

@@ -1,12 +1,13 @@
 import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Home, Profile, Wishlist } from "../screen";
+import { Profile, BookShelf } from "../screen";
 
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS, DIM } from "../constants";
 
 import BooksNavigator from "./BooksNavigator";
+import ShelfNavigator from "./ShelfNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +46,7 @@ const BottomTabNavigator = () => {
 			/>
 			<Tab.Screen
 				name="wish"
-				component={Wishlist}
+				component={ShelfNavigator}
 				options={{
 					tabBarIcon: ({ focused }) => {
 						return (

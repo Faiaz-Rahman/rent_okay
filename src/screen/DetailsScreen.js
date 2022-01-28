@@ -1,13 +1,29 @@
+import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import React from "react";
 
-import { FontAwesome } from "@expo/vector-icons";
+import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { Rating } from "react-native-ratings";
 
 import { COLORS, DIM } from "../constants";
-import { CustomButton, Header } from "../components";
+import { Header, DetailingComponent, CustomButton } from "../components";
 
 export default function DetailsScreen({ navigation, route }) {
-	const { id, src, author, rent, rating, owner, email } = route.params;
+	const [userRating, setUserRating] = useState(null);
+
+	const {
+		src,
+		author,
+		rating,
+		owner,
+		owner_email,
+		location_for_pickup,
+		return_date,
+		return_time,
+	} = route.params;
+	const ratingCompleted = (rating) => {
+		setUserRating(rating);
+		// console.log(rating);
+	};
 	return (
 		<View style={styles.container}>
 			<Header
@@ -23,10 +39,7 @@ export default function DetailsScreen({ navigation, route }) {
 				<View style={styles.imageContainer}>
 					<Image
 						source={{ uri: src }}
-						style={{
-							height: "95%",
-							width: "50%",
-						}}
+						style={styles.image}
 						resizeMode="cover"
 					/>
 					<View style={styles.textBoxContainer}>
@@ -34,12 +47,16 @@ export default function DetailsScreen({ navigation, route }) {
 							<Text style={styles.title}>Author :</Text>
 							<Text style={styles.subTitle}>{author}</Text>
 						</View>
-						<View style={{ height: 2, backgroundColor: COLORS.primary }}></View>
+						<View
+							style={{ height: 1.5, backgroundColor: COLORS.primary }}
+						></View>
 						<View>
 							<Text style={styles.title}>Owner :</Text>
 							<Text style={styles.subTitle}>{owner}</Text>
 						</View>
-						<View style={{ height: 2, backgroundColor: COLORS.primary }}></View>
+						<View
+							style={{ height: 1.5, backgroundColor: COLORS.primary }}
+						></View>
 
 						<View>
 							<Text style={styles.title}>Rating :</Text>
@@ -53,50 +70,83 @@ export default function DetailsScreen({ navigation, route }) {
 								<Text style={styles.subTitle}>{rating}</Text>
 							</View>
 						</View>
-						<View style={{ height: 2, backgroundColor: COLORS.primary }}></View>
+						<View
+							style={{ height: 1.5, backgroundColor: COLORS.primary }}
+						></View>
 					</View>
 				</View>
 				<View style={styles.confirmText}>
-					<View
-						style={{
-							height: DIM.height * 0.15,
-							width: DIM.width * 0.9,
-							// backgroundColor: "orange",
-							padding: 10,
-						}}
-					>
-						<Text style={styles.title}>Contact Email :</Text>
-						<Text
-							style={{
-								letterSpacing: 3,
-								fontSize: 19,
-								fontWeight: "600",
-								color: "slategrey",
-							}}
-						>
-							{email}
-						</Text>
+					<DetailingComponent
+						title={"Contact Email :"}
+						subTitle={owner_email}
+						iconName={"mail-sharp"}
+					/>
+					<View style={styles.divider} />
+					<DetailingComponent
+						title={"Location for pickup :"}
+						subTitle={location_for_pickup}
+						iconName={"location"}
+					/>
+					<View style={styles.divider} />
+					<DetailingComponent
+						title={"Date of returning: "}
+						subTitle={`${return_date}, ${return_time}`}
+						iconName={"time-sharp"}
+					/>
+					<View style={styles.divider} />
+					<View style={styles.ratingsContainer}>
+						<View style={styles.ratingTitleContainer}>
+							<Ionicons
+								name={"star"}
+								color={COLORS.primary}
+								size={30}
+								style={styles.star}
+							/>
+							<Text style={styles.contentTitle}>{"Give A Rating :"}</Text>
+						</View>
+						<View>
+							<Rating
+								type="custom"
+								showRating
+								ratingCount={5}
+								jumpValue={0.5}
+								fractions={1}
+								startingValue={rating}
+								imageSize={45}
+								ratingTextColor="grey"
+								ratingColor={COLORS.primary}
+								onFinishRating={ratingCompleted}
+								style={{ paddingVertical: 10 }}
+							/>
+						</View>
 					</View>
-					<Text
-						style={{
-							fontSize: 25,
-							letterSpacing: 1,
-							textAlign: "center",
-							fontWeight: "700",
-						}}
-					>
-						Do you want to take this book
-					</Text>
 				</View>
-				<CustomButton text={"For the rent of " + rent} onPress={() => {}} />
+				<CustomButton
+					text={"Submit Rating"}
+					iconName={"share"}
+					iconStyle={{
+						marginLeft: 15,
+					}}
+				/>
 			</ScrollView>
 		</View>
 	);
 }
 
 const styles = StyleSheet.create({
+	ratingsContainer: {
+		height: DIM.height * 0.13,
+		width: DIM.width * 0.9,
+		// backgroundColor: "orange",
+		padding: 10,
+		marginBottom: DIM.height * 0.1,
+	},
+	ratingTitleContainer: {
+		flexDirection: "row",
+		// backgroundColor: "red",
+		alignItems: "center",
+	},
 	confirmText: {
-		paddingTop: 10,
 		marginBottom: 20,
 	},
 	title: {
@@ -105,9 +155,22 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		letterSpacing: 2,
 	},
+	contentTitle: {
+		fontSize: 24,
+		color: "slategrey",
+		fontWeight: "bold",
+		letterSpacing: 2,
+	},
 	scrollView: {
 		paddingBottom: DIM.height * 0.15,
 		alignItems: "center",
+	},
+	divider: {
+		height: 1.5,
+		width: DIM.width * 0.9,
+		alignSelf: "center",
+		backgroundColor: "slategrey",
+		// backgroundColor: COLORS.primary,
 	},
 	star: {
 		marginRight: 10,
@@ -122,7 +185,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 		backgroundColor: COLORS.white,
-		paddingTop: 30,
+		// paddingTop: 30,
+	},
+	image: {
+		height: "95%",
+		width: "50%",
 	},
 	imageContainer: {
 		height: DIM.height * 0.38,

@@ -4,5 +4,14 @@ import Header from "./Header";
 import Logo from "./Logo";
 import Card from "./Card";
 import ErrorComponent from "./ErrorComponent";
+import DetailingComponent from "./DetailingComponent";
 
-export { Header, CustomButton, ErrorComponent, Card, Logo, CustomTextInput };
+export {
+	Header,
+	CustomButton,
+	DetailingComponent,
+	ErrorComponent,
+	Card,
+	Logo,
+	CustomTextInput,
+};

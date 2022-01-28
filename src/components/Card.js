@@ -4,7 +4,12 @@ import { COLORS, DIM } from "../constants";
 
 import { Rating } from "react-native-ratings";
 
-export default function Card({ val, onPress }) {
+export default function Card({
+	val,
+	onPress,
+	shelf = false,
+	ratingContainerStyle,
+}) {
 	return (
 		<>
 			<View style={styles.margin} />
@@ -25,13 +30,23 @@ export default function Card({ val, onPress }) {
 							AUTHOR:{"\n"}
 							{val.author}
 						</Text>
-						<View style={styles.ownerContainer}>
-							<Text style={styles.owner}>OWNER: {val.owner}</Text>
-						</View>
-						<View style={styles.rentContainer}>
-							<Text style={styles.rentText}>RENT: </Text>
-							<Text style={styles.rentText}>{val.rent}</Text>
-						</View>
+						{!shelf && (
+							<View style={styles.ownerContainer}>
+								<Text style={styles.owner}>OWNER: {val.owner}</Text>
+							</View>
+						)}
+						{!shelf && (
+							<View style={styles.rentContainer}>
+								<Text style={styles.rentText}>RENT: </Text>
+								<Text style={styles.rentText}>{val.rent}</Text>
+							</View>
+						)}
+						{shelf && (
+							<View style={[styles.rentContainer, ratingContainerStyle]}>
+								<Text style={styles.rentText}>RENT: </Text>
+								<Text style={styles.rentText}>{val.rent}</Text>
+							</View>
+						)}
 						<View style={styles.ratingMainContainer}>
 							<View style={styles.ratingCardContainer}>
 								<Text style={styles.ratingCard}>Rating</Text>
