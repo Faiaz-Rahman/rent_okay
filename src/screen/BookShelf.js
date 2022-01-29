@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
 		bottom: DIM.height * 0.13,
 		right: DIM.width * 0.08,
 		backgroundColor: COLORS.primary,
-		opacity: 0.65,
+		opacity: 0.9,
 	},
 	ratingContainerStyle: {
 		marginTop: 25,
