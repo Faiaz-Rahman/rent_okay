@@ -1,11 +1,5 @@
 import React from "react";
-import {
-	StyleSheet,
-	Text,
-	View,
-	ScrollView,
-	TouchableHighlight,
-} from "react-native";
+import { StyleSheet, View, ScrollView, TouchableHighlight } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
 
