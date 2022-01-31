@@ -35,6 +35,7 @@ export default function BookShelf({ navigation }) {
 			</ScrollView>
 			{/* Floating Button */}
 			<TouchableHighlight
+				underlayColor={"#FFC0CB"}
 				style={styles.floatingButton}
 				onPress={() => navigation.navigate("addToShelf")}
 			>
