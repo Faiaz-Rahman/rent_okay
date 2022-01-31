@@ -16,7 +16,9 @@ const CustomTextInput = ({
 	text,
 	passEntry = null,
 	customStyle,
+	onBlur,
 	onChangeText,
+	onEndEditing,
 	keyboardType = "email-address",
 }) => {
 	const [hide, setHide] = useState(true);
@@ -36,6 +38,8 @@ const CustomTextInput = ({
 					style={styles.textInput}
 					onChangeText={onChangeText}
 					keyboardType={keyboardType}
+					onBlur={onBlur}
+					onEndEditing={onEndEditing}
 				/>
 			</View>
 		);
