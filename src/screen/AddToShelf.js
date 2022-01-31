@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
 	StyleSheet,
 	Text,
@@ -22,14 +22,36 @@ import ImagePicker from "react-native-image-crop-picker";
 
 import moment from "moment";
 
-import RNDateTimePicker from "@react-native-community/datetimepicker";
+import { Formik } from "formik";
+import * as yup from "yup";
+
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 import { COLORS, DIM } from "../constants";
-import { Header, CustomTextInput } from "../components";
+import {
+	Header,
+	CustomTextInput,
+	CustomButton,
+	ErrorComponent,
+} from "../components";
 
 export default function AddToShelf({ navigation }) {
-	const [date, setDate] = useState(new Date());
+	const validationSchema = yup.object().shape({
+		name: yup.string().required("Name of Book is required"),
+		author_name: yup.string().required("Provide the Author Name of Book"),
+		location: yup.string().required("Provide Pickup Location"),
+		rent_price: yup.string().min(1).required("Enter a price"),
+		pickup_date: yup.string().required("Pickup Date and Time is a must"),
+		pickup_time: yup.string().required("Pickup Time is required"),
+		quality: yup.string().required("Provide the Quality"),
+		image: yup.string().required("Provide an Image"),
+		blkout_date: yup.string(),
+	});
+
+	const [date, setDate] = useState("");
 	const [time, setTime] = useState("");
+	const [blackoutDate, setBlackoutDate] = useState("");
+
 	const [modalOpen, setModalOpen] = useState(false);
 	const [showQualityError, setShowQualityError] = useState(false);
 
@@ -37,66 +59,33 @@ export default function AddToShelf({ navigation }) {
 	const [low, setLow] = useState(false);
 	const [medium, setMedium] = useState(false);
 
-	const [showDatePicker, setShowDatePicker] = useState(false);
-	const [hasDatePickerOpened, setHasDatePickerOpened] = useState(false);
-
-	const [showTimePicker, setShowTimePicker] = useState(false);
-	const [hasTimePickerOpened, setHasTimePickerOpened] = useState(false);
-
-	const [blackout, setBlackout] = useState(false);
-	const [blackoutDate, setBlackoutDate] = useState(new Date());
-	const [hasBlackoutDatePickerOpened, setHasBlackoutDatePickerOpened] =
-		useState(false);
-
-	const onChange = (event, selectedDate) => {
-		const currentDate = selectedDate || date;
-		setShowDatePicker(false);
-		setDate(currentDate);
-	};
-
-	const onChangeTime = (event, selectedDate) => {
-		const currentDate = selectedDate || date;
-		setShowTimePicker(false);
-
-		let temp = moment(currentDate);
-		let timeComp = temp.format("HH:mm");
-		// console.log(timeComp);
-
-		setTime(timeComp);
-
-		// let fHours = currentDate.getHours().toString();
-		// let fMin = currentDate.getMinutes().toString();
-		// let tempTime = fHours + " : " + fMin;
-		// // console.log(selectedDate);
-
-		// setTime(tempTime);
-	};
-
-	const onChangeBlackout = (event, selectedDate) => {
-		const currentDate = selectedDate || date;
-		setBlackout(false);
-		setBlackoutDate(currentDate);
-	};
+	const img = useRef(null);
 
 	const [image, setImage] = useState(null);
 	const [imagePickerOpened, setImagePickerOpened] = useState(false);
-	// Image Picker is set
-	const chooseImageFromLibrary = () => {
-		setImagePickerOpened(true);
 
-		ImagePicker.openPicker({
-			width: 300,
-			height: 400,
-			cropping: true,
-		})
-			.then((image) => {
-				const imageUri = image.path;
-				setImage(imageUri);
-			})
-			.catch(() => {
-				setImage(null);
-			});
+	const [showDatePicker, setShowDatePicker] = useState(false);
+	const [showTimePicker, setShowTimePicker] = useState(false);
+
+	const [hasDatePickerOpened, setHasDatePickerOpened] = useState(false);
+	const [hasTimePickerOpened, setHasTimePickerOpened] = useState(false);
+
+	const [showBlackoutDate, setShowBlackoutDate] = useState(false);
+	const [hasBlackoutDateOpened, setHasBlackoutDateOpened] = useState(false);
+
+	const hideDatePicker = () => {
+		setShowDatePicker(false);
 	};
+	const hideTimePicker = () => {
+		setShowTimePicker(false);
+	};
+
+	// const handleConfirm = (date) => {
+	// 	console.warn("A date has been picked: ", date);
+	// 	hideDatePicker();
+	// };
+
+	// Image Picker is set
 	return (
 		<View style={styles.container}>
 			<Header
@@ -109,274 +98,433 @@ export default function AddToShelf({ navigation }) {
 				contentContainerStyle={styles.scrollView}
 				showsVerticalScrollIndicator={false}
 			>
-				<TouchableOpacity
-					onPress={chooseImageFromLibrary}
-					style={styles.imagePicker}
-				>
-					{image !== null && (
-						<Image source={{ uri: image }} style={styles.image} />
-					)}
-					{image === null && <Entypo name="camera" size={35} color={"grey"} />}
-				</TouchableOpacity>
-				<CustomTextInput
-					customStyle={styles.custom}
-					iconName={"book"}
-					text={"Name of your book"}
-				/>
-				<CustomTextInput
-					customStyle={styles.custom}
-					iconName={"create-sharp"}
-					text={"Name of Author"}
-				/>
-				<CustomTextInput
-					customStyle={styles.custom}
-					iconName={"location"}
-					text={"Location for return book"}
-				/>
-				<CustomTextInput
-					customStyle={styles.custom}
-					iconName={"md-logo-usd"}
-					text={"Rent Price"}
-					keyboardType="numeric"
-				/>
-				<View style={styles.datePickerContainer}>
-					<TouchableHighlight
-						style={styles.datePicker}
-						onPress={() => {
-							setShowDatePicker(true);
-							setHasDatePickerOpened(true);
-						}}
-						underlayColor={COLORS.box_light}
-					>
-						<>
-							{showDatePicker && (
-								<RNDateTimePicker
-									testID="dateTimePicker"
-									display="default"
-									value={date}
-									mode={"date"}
-									is24Hour={true}
-									onChange={onChange}
-								/>
-							)}
-							<Ionicons
-								name="calendar"
-								size={30}
-								color={"grey"}
-								style={styles.icon}
-							/>
-							{!hasDatePickerOpened && (
-								<Text style={styles.datePickerText}>Pickup Date</Text>
-							)}
-							{hasDatePickerOpened && (
-								<Text style={styles.datePickerText}>
-									{date.toString().slice(4, 15)}
-								</Text>
-							)}
-						</>
-					</TouchableHighlight>
-					<TouchableHighlight
-						style={styles.timePicker}
-						onPress={() => {
-							setShowTimePicker(true);
-							setHasTimePickerOpened(true);
-						}}
-						underlayColor={COLORS.box_light}
-					>
-						<>
-							{showTimePicker && (
-								<RNDateTimePicker
-									testID="dateTimePicker"
-									display="default"
-									value={date}
-									mode={"time"}
-									is24Hour={true}
-									onChange={onChangeTime}
-								/>
-							)}
-							<Ionicons
-								name="time"
-								size={30}
-								color={"grey"}
-								style={{ marginRight: 9 }}
-							/>
-							{!hasTimePickerOpened && (
-								<Text style={styles.datePickerText}>Time</Text>
-							)}
-							{hasTimePickerOpened && (
-								<Text style={styles.datePickerText}>{time}</Text>
-							)}
-						</>
-					</TouchableHighlight>
-				</View>
-				<TouchableHighlight
-					underlayColor={COLORS.box_light}
-					onPress={() => {
-						// console.log("Open Modal");
-						setModalOpen(true);
+				<Formik
+					initialValues={{
+						name: "",
+						author_name: "",
+						location: "",
+						rent_price: "",
+						pickup_date: "",
+						pickup_time: "",
+						quality: "",
+						image: "",
+						blkout_date: "",
 					}}
-					style={styles.conditionPickerContainer}
+					validationSchema={validationSchema}
+					onSubmit={(values) => console.log(values)}
 				>
-					<>
-						<FontAwesome
-							name="cube"
-							size={30}
-							color={"grey"}
-							style={styles.icon}
-						/>
-						{!high && !low && !medium && (
-							<Text style={styles.conditionPickerText}>
-								Select Quality of Product
-							</Text>
-						)}
-						{high && (
-							<Text
-								style={[styles.conditionPickerText, { marginRight: "53%" }]}
-							>
-								{"Good"}
-							</Text>
-						)}
-						{low && (
-							<Text
-								style={[styles.conditionPickerText, { marginRight: "55%" }]}
-							>
-								{"Poor"}
-							</Text>
-						)}
-						{medium && (
-							<Text
-								style={[styles.conditionPickerText, { marginRight: "56%" }]}
-							>
-								{"Bad"}
-							</Text>
-						)}
-						<Ionicons
-							name="caret-down"
-							size={30}
-							color={"grey"}
-							style={{ marginLeft: 20 }}
-						/>
-					</>
-				</TouchableHighlight>
-				{modalOpen && (
-					<Modal
-						animationType="slide"
-						transparent
-						onRequestClose={() => setModalOpen(false)}
-					>
-						<View style={styles.modalStyle}>
-							<View style={styles.modalElementContainer}>
-								<MaterialCommunityIcons
-									name="quality-high"
-									size={30}
-									color={COLORS.primary}
-									style={{ marginRight: 10 }}
-								/>
-								<Text style={styles.modalElementText}>Good</Text>
-								<CheckBox
-									disabled={low || medium ? true : false}
-									value={high}
-									onValueChange={(newvalue) => setHigh(newvalue)}
-									style={{
-										marginLeft: "48%",
-									}}
-									tintColors={{ true: COLORS.primary, false: COLORS.primary }}
-								/>
-							</View>
-							<View style={styles.modalElementContainer}>
-								<MaterialCommunityIcons
-									name="quality-medium"
-									size={30}
-									color={COLORS.primary}
-									style={{ marginRight: 10 }}
-								/>
-								<Text style={styles.modalElementText}>Bad</Text>
-								<CheckBox
-									disabled={high || low ? true : false}
-									value={medium}
-									onValueChange={(newvalue) => setMedium(newvalue)}
-									style={{
-										marginLeft: "52%",
-									}}
-									tintColors={{ true: COLORS.primary, false: COLORS.primary }}
-								/>
-							</View>
-							<View
-								style={[styles.modalElementContainer, { marginBottom: 10 }]}
-							>
-								<MaterialCommunityIcons
-									name="quality-low"
-									size={30}
-									color={COLORS.primary}
-									style={{ marginRight: 10 }}
-								/>
-								<Text style={styles.modalElementText}>Poor</Text>
-								<CheckBox
-									disabled={high || medium ? true : false}
-									value={low}
-									onValueChange={(newvalue) => setLow(newvalue)}
-									style={{
-										marginLeft: "50%",
-									}}
-									tintColors={{ true: COLORS.primary, false: COLORS.primary }}
-								/>
-							</View>
-							{showQualityError && (
-								<Text style={styles.qualityError}>
-									Select at lease one quality
-								</Text>
-							)}
+					{({
+						handleSubmit,
+						handleChange,
+						values,
+						errors,
+						touched,
+						handleBlur,
+						setTouched,
+						setErrors,
+						setFieldTouched,
+						setFieldValue,
+						isValid,
+					}) => (
+						<>
 							<TouchableOpacity
-								style={styles.modalButton}
 								onPress={() => {
-									if (!high && !low && !medium) {
-										setShowQualityError(true);
-									} else {
-										setShowQualityError(false);
-										setModalOpen(false);
-									}
+									setFieldTouched("image", true);
+									setImagePickerOpened(true);
+
+									let imageUri = "";
+									ImagePicker.openPicker({
+										width: 300,
+										height: 400,
+										cropping: true,
+									})
+										.then((image) => {
+											imageUri = image.path;
+											setImage(imageUri);
+
+											setFieldValue("image", imageUri);
+											img.current = imageUri;
+											// console.log(imageUri);
+										})
+										.catch(() => {
+											// console.log("Image Picker Closed");
+											setImage(null);
+										});
 								}}
+								style={styles.imagePicker}
 							>
-								<Text style={styles.modalButtonText}>Done</Text>
+								{image !== null && (
+									<Image source={{ uri: image }} style={styles.image} />
+								)}
+								{image === null && (
+									<Entypo name="camera" size={35} color={"grey"} />
+								)}
 							</TouchableOpacity>
-						</View>
-					</Modal>
-				)}
-				<TouchableHighlight
-					style={styles.blackOut}
-					onPress={() => {
-						setBlackout(true);
-						setHasBlackoutDatePickerOpened(true);
-					}}
-					underlayColor={COLORS.box_light}
-				>
-					<>
-						{blackout && (
-							<RNDateTimePicker
-								testID="dateTimePicker"
-								display="default"
-								value={date}
-								mode={"date"}
-								is24Hour={true}
-								onChange={onChangeBlackout}
+							{errors.image && touched.image && (
+								// Custom ErrorComponent for Displaying Errors
+								<ErrorComponent error={errors.image} />
+							)}
+							<CustomTextInput
+								customStyle={{ marginTop: 7, marginBottom: 7 }}
+								iconName={"book"}
+								text={"Name of your book"}
+								onChangeText={handleChange("name")}
+								onBlur={handleBlur("name")}
 							/>
-						)}
-						<FontAwesome
-							name="calendar-times-o"
-							size={30}
-							color={"grey"}
-							style={styles.icon}
-						/>
-						{!hasBlackoutDatePickerOpened && (
-							<Text style={styles.datePickerText}>Blackout Date</Text>
-						)}
-						{hasBlackoutDatePickerOpened && (
-							<Text style={styles.datePickerText}>
-								{blackoutDate.toString().slice(4, 15)}
-							</Text>
-						)}
-					</>
-				</TouchableHighlight>
+							{errors.name && touched.name && (
+								// Custom ErrorComponent for Displaying Errors
+								<ErrorComponent error={errors.name} />
+							)}
+							<CustomTextInput
+								customStyle={styles.custom}
+								iconName={"create-sharp"}
+								onChangeText={handleChange("author_name")}
+								text={"Name of Author"}
+								onBlur={handleBlur("author_name")}
+							/>
+							{errors.author_name && touched.author_name && (
+								// Custom ErrorComponent for Displaying Errors
+								<ErrorComponent error={errors.author_name} />
+							)}
+							<CustomTextInput
+								customStyle={styles.custom}
+								iconName={"location"}
+								text={"Location for return book"}
+								onChangeText={handleChange("location")}
+								onBlur={handleBlur("location")}
+							/>
+							{errors.location && touched.location && (
+								// Custom ErrorComponent for Displaying Errors
+								<ErrorComponent error={errors.location} />
+							)}
+							<CustomTextInput
+								customStyle={styles.custom}
+								iconName={"md-logo-usd"}
+								text={"Rent Price"}
+								keyboardType="numeric"
+								onChangeText={handleChange("rent_price")}
+								onBlur={handleBlur("rent_price")}
+							/>
+							{errors.rent_price && touched.rent_price && (
+								// Custom ErrorComponent for Displaying Errors
+								<ErrorComponent error={errors.rent_price} />
+							)}
+							<View style={styles.datePickerContainer}>
+								<TouchableHighlight
+									style={styles.datePicker}
+									onPress={() => {
+										setShowDatePicker(true);
+										setFieldTouched("pickup_date", true);
+									}}
+									underlayColor={COLORS.box_light}
+								>
+									<>
+										<Ionicons
+											name="calendar"
+											size={30}
+											color={"grey"}
+											style={styles.icon}
+										/>
+										{showDatePicker && (
+											<DateTimePickerModal
+												isVisible={showDatePicker}
+												mode="date"
+												onConfirm={(date) => {
+													let tmp = date.toString().slice(4, 15);
+													setDate(tmp);
+													// console.log(tmp);
+													setHasDatePickerOpened(true);
+
+													setShowDatePicker(false);
+													setFieldValue("pickup_date", tmp);
+												}}
+												onCancel={hideDatePicker}
+											/>
+										)}
+										{hasDatePickerOpened ? (
+											<Text style={styles.datePickerText}>{date}</Text>
+										) : (
+											<Text style={styles.datePickerText}>{"Pickup Date"}</Text>
+										)}
+									</>
+								</TouchableHighlight>
+								<TouchableHighlight
+									style={styles.timePicker}
+									onPress={() => {
+										setShowTimePicker(true);
+										setFieldTouched("pickup_time", true);
+									}}
+									underlayColor={COLORS.box_light}
+								>
+									<>
+										<Ionicons
+											name="time"
+											size={30}
+											color={"grey"}
+											style={{ marginRight: 9 }}
+										/>
+										{showTimePicker && (
+											<DateTimePickerModal
+												isVisible={showTimePicker}
+												is24Hour
+												mode="time"
+												onConfirm={(date) => {
+													let tmp = moment(date);
+													let fTime = tmp.format("HH:mm");
+
+													setTime(fTime);
+													// console.log(fTime);
+													setHasTimePickerOpened(true);
+
+													setShowTimePicker(false);
+													setFieldValue("pickup_time", fTime);
+												}}
+												onCancel={hideTimePicker}
+											/>
+										)}
+										{hasTimePickerOpened ? (
+											<Text style={styles.datePickerText}>{time}</Text>
+										) : (
+											<Text style={styles.datePickerText}>{"Time"}</Text>
+										)}
+									</>
+								</TouchableHighlight>
+							</View>
+							{((errors.pickup_date &&
+								touched.pickup_date &&
+								errors.pickup_time &&
+								touched.pickup_time) ||
+								!values.pickup_time) && (
+								<ErrorComponent error={errors.pickup_date} />
+							)}
+
+							<TouchableHighlight
+								underlayColor={COLORS.box_light}
+								onPress={() => {
+									// console.log("Open Modal");
+									setFieldTouched("quality", true);
+									setModalOpen(true);
+								}}
+								style={styles.conditionPickerContainer}
+							>
+								<>
+									<FontAwesome
+										name="cube"
+										size={30}
+										color={"grey"}
+										style={styles.icon}
+									/>
+									{!high && !low && !medium && (
+										<Text style={styles.conditionPickerText}>
+											Select Quality of Product
+										</Text>
+									)}
+									{high && (
+										<Text
+											style={[
+												styles.conditionPickerText,
+												{ marginRight: "53%" },
+											]}
+										>
+											{"Good"}
+										</Text>
+									)}
+									{low && (
+										<Text
+											style={[
+												styles.conditionPickerText,
+												{ marginRight: "55%" },
+											]}
+										>
+											{"Poor"}
+										</Text>
+									)}
+									{medium && (
+										<Text
+											style={[
+												styles.conditionPickerText,
+												{ marginRight: "56%" },
+											]}
+										>
+											{"Bad"}
+										</Text>
+									)}
+									<Ionicons
+										name="caret-down"
+										size={30}
+										color={"grey"}
+										style={{ marginLeft: 20 }}
+									/>
+								</>
+							</TouchableHighlight>
+							{modalOpen && (
+								<Modal
+									animationType="slide"
+									transparent
+									onRequestClose={() => {
+										if (high || low || medium) {
+											if (high) {
+												setFieldValue("quality", "good");
+											} else if (low) {
+												setFieldValue("quality", "poor");
+											} else {
+												setFieldValue("quality", "bad");
+											}
+											setModalOpen(false);
+										}
+									}}
+								>
+									<View style={styles.modalStyle}>
+										<View style={styles.modalElementContainer}>
+											<MaterialCommunityIcons
+												name="quality-high"
+												size={30}
+												color={COLORS.primary}
+												style={{ marginRight: 10 }}
+											/>
+											<Text style={styles.modalElementText}>Good</Text>
+											<CheckBox
+												disabled={low || medium ? true : false}
+												value={high}
+												onValueChange={(newvalue) => setHigh(newvalue)}
+												style={{
+													marginLeft: "48%",
+												}}
+												tintColors={{
+													true: COLORS.primary,
+													false: COLORS.primary,
+												}}
+											/>
+										</View>
+										<View style={styles.modalElementContainer}>
+											<MaterialCommunityIcons
+												name="quality-medium"
+												size={30}
+												color={COLORS.primary}
+												style={{ marginRight: 10 }}
+											/>
+											<Text style={styles.modalElementText}>Bad</Text>
+											<CheckBox
+												disabled={high || low ? true : false}
+												value={medium}
+												onValueChange={(newvalue) => setMedium(newvalue)}
+												style={{
+													marginLeft: "52%",
+												}}
+												tintColors={{
+													true: COLORS.primary,
+													false: COLORS.primary,
+												}}
+											/>
+										</View>
+										<View
+											style={[
+												styles.modalElementContainer,
+												{ marginBottom: 10 },
+											]}
+										>
+											<MaterialCommunityIcons
+												name="quality-low"
+												size={30}
+												color={COLORS.primary}
+												style={{ marginRight: 10 }}
+											/>
+											<Text style={styles.modalElementText}>Poor</Text>
+											<CheckBox
+												disabled={high || medium ? true : false}
+												value={low}
+												onValueChange={(newvalue) => setLow(newvalue)}
+												style={{
+													marginLeft: "50%",
+												}}
+												tintColors={{
+													true: COLORS.primary,
+													false: COLORS.primary,
+												}}
+											/>
+										</View>
+										{showQualityError && (
+											<Text style={styles.qualityError}>
+												Select at lease one quality
+											</Text>
+										)}
+										<TouchableOpacity
+											style={styles.modalButton}
+											onPress={() => {
+												if (!high && !low && !medium) {
+													setShowQualityError(true);
+												} else {
+													setShowQualityError(false);
+													if (high) {
+														setFieldValue("quality", "good");
+													} else if (low) {
+														setFieldValue("quality", "poor");
+													} else {
+														setFieldValue("quality", "bad");
+													}
+													setModalOpen(false);
+												}
+											}}
+										>
+											<Text style={styles.modalButtonText}>Done</Text>
+										</TouchableOpacity>
+									</View>
+								</Modal>
+							)}
+							{errors.quality && touched.quality && (
+								// Custom ErrorComponent for Displaying QualityPicker Errors
+								<ErrorComponent error={errors.quality} />
+							)}
+							<TouchableHighlight
+								style={styles.blackOut}
+								onPress={() => {
+									setHasBlackoutDateOpened(true);
+									setShowBlackoutDate(true);
+								}}
+								underlayColor={COLORS.box_light}
+							>
+								<>
+									<FontAwesome
+										name="calendar-times-o"
+										size={30}
+										color={"grey"}
+										style={styles.icon}
+									/>
+									{showBlackoutDate && (
+										<DateTimePickerModal
+											isVisible={showBlackoutDate}
+											mode="date"
+											onConfirm={(date) => {
+												let tmp = date.toString().slice(4, 15);
+												setBlackoutDate(tmp);
+												// console.log(tmp);
+												setHasBlackoutDateOpened(true);
+
+												setShowBlackoutDate(false);
+												setFieldValue("blkout_date", tmp);
+											}}
+											onCancel={() => setBlackoutDate(false)}
+										/>
+									)}
+									{hasBlackoutDateOpened ? (
+										<Text style={styles.datePickerText}>{blackoutDate}</Text>
+									) : (
+										<Text style={styles.datePickerText}>{"Blackout Date"}</Text>
+									)}
+								</>
+							</TouchableHighlight>
+							<CustomButton
+								text="Submit"
+								iconName={"arrow-redo"}
+								iconStyle={{ marginLeft: 15 }}
+								customStyle={{ marginTop: 15 }}
+								onPress={() => {
+									handleSubmit();
+								}}
+							/>
+						</>
+					)}
+				</Formik>
 			</ScrollView>
 		</View>
 	);
@@ -391,7 +539,7 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.slate,
 		borderRadius: 10,
 		paddingLeft: 20,
-		marginTop: 15,
+		marginTop: 7,
 	},
 	conditionPickerContainer: {
 		flexDirection: "row",
@@ -401,7 +549,8 @@ const styles = StyleSheet.create({
 		backgroundColor: COLORS.slate,
 		borderRadius: 10,
 		paddingLeft: 20,
-		marginTop: 15,
+		marginTop: 7,
+		marginBottom: 6,
 	},
 	conditionPickerText: {
 		fontSize: 17,
@@ -416,7 +565,8 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	custom: {
-		marginTop: 15,
+		marginTop: 7,
+		marginBottom: 4,
 	},
 	icon: {
 		marginRight: 14,
@@ -434,15 +584,16 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 		alignItems: "center",
 		overflow: "hidden",
+		marginBottom: 10,
 	},
 	scrollView: {
 		alignItems: "center",
-		paddingBottom: 300,
+		paddingBottom: 100,
 	},
 	datePicker: {
 		height: DIM.height * 0.1,
 		width: DIM.width * 0.45,
-		backgroundColor: COLORS.boxColor,
+		backgroundColor: COLORS.slate,
 		alignItems: "center",
 		paddingLeft: 20,
 		borderRadius: 10,
@@ -459,14 +610,15 @@ const styles = StyleSheet.create({
 		// backgroundColor: "red",
 		height: DIM.height * 0.1,
 		width: DIM.width,
-		marginTop: 15,
+		marginTop: 7,
+		marginBottom: 7,
 		paddingLeft: DIM.width * 0.07,
 		flexDirection: "row",
 	},
 	timePicker: {
 		height: DIM.height * 0.1,
 		width: DIM.width * 0.34,
-		backgroundColor: COLORS.boxColor,
+		backgroundColor: COLORS.slate,
 		alignItems: "center",
 		paddingLeft: 20,
 		borderRadius: 10,
