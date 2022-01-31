@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
-import { Rating } from "react-native-ratings";
+import { AirbnbRating, Rating } from "react-native-ratings";
 
 import { COLORS, DIM } from "../constants";
 import { Header, DetailingComponent, CustomButton } from "../components";
@@ -105,17 +105,13 @@ export default function DetailsScreen({ navigation, route }) {
 							<Text style={styles.contentTitle}>{"Give A Rating :"}</Text>
 						</View>
 						<View>
-							<Rating
-								type="custom"
-								showRating
-								ratingCount={5}
-								jumpValue={0.5}
-								fractions={1}
-								startingValue={rating}
-								imageSize={45}
-								ratingTextColor="grey"
-								ratingColor={COLORS.primary}
+							<AirbnbRating
+								defaultRating={rating}
+								selectedColor={COLORS.primary}
+								unSelectedColor={COLORS.slate}
 								onFinishRating={ratingCompleted}
+								reviewSize={20}
+								reviewColor={COLORS.primary}
 								style={{ paddingVertical: 10 }}
 							/>
 						</View>
