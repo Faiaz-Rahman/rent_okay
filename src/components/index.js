@@ -5,6 +5,7 @@ import Logo from "./Logo";
 import Card from "./Card";
 import ErrorComponent from "./ErrorComponent";
 import DetailingComponent from "./DetailingComponent";
+import ProfileElement from "./ProfileElement";
 
 export {
 	Header,
@@ -13,5 +14,6 @@ export {
 	ErrorComponent,
 	Card,
 	Logo,
+	ProfileElement,
 	CustomTextInput,
 };

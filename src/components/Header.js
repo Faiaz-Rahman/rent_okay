@@ -12,6 +12,7 @@ import { Octicons, FontAwesome, Fontisto, Ionicons } from "@expo/vector-icons";
 import { COLORS, DIM } from "../constants";
 
 export default function Header({
+	customRightIcon,
 	leftIconOnPress,
 	text,
 	rightIconOnPress,
@@ -19,6 +20,7 @@ export default function Header({
 	search,
 	notHome = false,
 	rightIconVisible = true,
+	customRightIconName,
 }) {
 	return (
 		<View style={styles.container}>
@@ -53,8 +55,11 @@ export default function Header({
 						color={COLORS.black}
 					/>
 				)}
-				{notHome && rightIconVisible && (
+				{notHome && rightIconVisible && !customRightIcon && (
 					<Ionicons name={"location-sharp"} size={35} color={COLORS.black} />
+				)}
+				{notHome && rightIconVisible && customRightIcon && (
+					<Ionicons name={customRightIconName} size={35} color={COLORS.black} />
 				)}
 			</TouchableOpacity>
 		</View>

@@ -5,10 +5,17 @@ import { COLORS, DIM } from "../constants";
 
 import { Ionicons } from "@expo/vector-icons";
 
-const CustomButton = ({ text, customStyle, iconName, onPress, iconStyle }) => {
+const CustomButton = ({
+	text,
+	customStyle,
+	iconName,
+	onPress,
+	iconStyle,
+	textStyle,
+}) => {
 	return (
 		<TouchableOpacity style={[styles.container, customStyle]} onPress={onPress}>
-			<Text style={styles.buttonText}>{text}</Text>
+			<Text style={[styles.buttonText, textStyle]}>{text}</Text>
 			<Ionicons
 				name={iconName}
 				size={35}

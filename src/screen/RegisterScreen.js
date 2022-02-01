@@ -74,7 +74,10 @@ export default function RegisterScreen() {
 					pass: "",
 					confPass: "",
 				}}
-				onSubmit={(values) => console.log(values)}
+				onSubmit={(values) => {
+					console.log(values);
+					// Verified tag should be sent while Registering
+				}}
 				validationSchema={validationSchema}
 			>
 				{({ handleSubmit, handleChange, values, errors, touched }) => (

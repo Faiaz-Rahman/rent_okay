@@ -80,12 +80,6 @@ export default function AddToShelf({ navigation }) {
 		setShowTimePicker(false);
 	};
 
-	// const handleConfirm = (date) => {
-	// 	console.warn("A date has been picked: ", date);
-	// 	hideDatePicker();
-	// };
-
-	// Image Picker is set
 	return (
 		<View style={styles.container}>
 			<Header
@@ -165,6 +159,7 @@ export default function AddToShelf({ navigation }) {
 								<ErrorComponent error={errors.image} />
 							)}
 							<CustomTextInput
+								refs={img}
 								customStyle={{ marginTop: 7, marginBottom: 7 }}
 								iconName={"book"}
 								text={"Name of your book"}
@@ -290,13 +285,12 @@ export default function AddToShelf({ navigation }) {
 									</>
 								</TouchableHighlight>
 							</View>
-							{((errors.pickup_date &&
+							{errors.pickup_date &&
 								touched.pickup_date &&
 								errors.pickup_time &&
-								touched.pickup_time) ||
-								!values.pickup_time) && (
-								<ErrorComponent error={errors.pickup_date} />
-							)}
+								touched.pickup_time && (
+									<ErrorComponent error={errors.pickup_date} />
+								)}
 
 							<TouchableHighlight
 								underlayColor={COLORS.box_light}

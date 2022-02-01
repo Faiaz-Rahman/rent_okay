@@ -1,7 +1,7 @@
 import React from "react";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Profile, BookShelf } from "../screen";
+import { Profile, BookShelf, Feed } from "../screen";
 
 import { Ionicons, FontAwesome } from "@expo/vector-icons";
 import { COLORS, DIM } from "../constants";
@@ -29,6 +29,21 @@ const BottomTabNavigator = () => {
 				},
 			}}
 		>
+			<Tab.Screen
+				name="feed"
+				component={Feed}
+				options={{
+					tabBarIcon: ({ focused }) => {
+						return (
+							<FontAwesome
+								name="feed"
+								size={30}
+								color={focused ? COLORS.primary : "grey"}
+							/>
+						);
+					},
+				}}
+			/>
 			<Tab.Screen
 				name="__books"
 				component={BooksNavigator}

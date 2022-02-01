@@ -7,12 +7,16 @@ import GettingStarted from "./GettingStarted";
 import Logout from "./Logout";
 import DetailsScreen from "./DetailsScreen";
 import AddToShelf from "./AddToShelf";
+import Feed from "./Feed";
+import Settings from "./Settings";
 
 export {
 	AddToShelf,
 	BookShelf,
+	Feed,
 	GettingStarted,
 	Logout,
+	Settings,
 	LoginScreen,
 	RegisterScreen,
 	Home,

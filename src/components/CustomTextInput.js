@@ -20,6 +20,7 @@ const CustomTextInput = ({
 	onChangeText,
 	onEndEditing,
 	keyboardType = "email-address",
+	refs,
 }) => {
 	const [hide, setHide] = useState(true);
 
@@ -33,6 +34,7 @@ const CustomTextInput = ({
 					style={styles.icon}
 				/>
 				<TextInput
+					ref={refs}
 					placeholder={text}
 					placeholderTextColor={"grey"}
 					style={styles.textInput}

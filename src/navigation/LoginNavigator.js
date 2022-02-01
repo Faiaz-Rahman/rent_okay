@@ -2,9 +2,13 @@ import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { LoginScreen, RegisterScreen, GettingStarted } from "../screen/";
+import {
+	LoginScreen,
+	RegisterScreen,
+	GettingStarted,
+	Settings,
+} from "../screen/";
 
-import DrawerNavigator from "./DrawerNavigator";
 import BottomTabNavigator from "./BottomTabNavigator";
 
 const Stack = createNativeStackNavigator();
@@ -35,16 +39,16 @@ const LoginNavigator = () => {
 					animation: "fade_from_bottom",
 				}}
 			/>
-			{/* <Stack.Screen
-				name="drawer"
-				component={DrawerNavigator}
-				options={{
-					headerShown: false,
-				}}
-			/> */}
 			<Stack.Screen
 				name="bottomTab"
 				component={BottomTabNavigator}
+				options={{
+					headerShown: false,
+				}}
+			/>
+			<Stack.Screen
+				name="settings"
+				component={Settings}
 				options={{
 					headerShown: false,
 				}}

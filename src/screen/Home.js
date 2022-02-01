@@ -20,7 +20,7 @@ export default function Home({ navigation }) {
 		<SafeAreaView style={styles.container}>
 			<Header
 				leftIconOnPress={() => console.log("Location Icon pressed")}
-				text={"Browse Books"}
+				text={"Books In Rent"}
 				rightIconOnPress={() => setSearchBoxVisible(!searchBoxVisible)}
 				searchBoxVisible={searchBoxVisible}
 				search={(text) => setSearchText(text)}
