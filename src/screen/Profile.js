@@ -8,7 +8,7 @@ import {
 	TouchableOpacity,
 } from "react-native";
 
-import ImageCropPicker from "react-native-image-crop-picker";
+import ImagePicker from "react-native-image-crop-picker";
 
 import { CustomButton, Header, ProfileElement } from "../components";
 import { COLORS, DIM } from "../constants";
@@ -25,7 +25,7 @@ export default function Profile({ navigation }) {
 	const chooseImageFromLibrary = () => {
 		setImagePickerOpened(true);
 
-		ImageCropPicker.openPicker({
+		ImagePicker.openPicker({
 			width: DIM.width,
 			height: DIM.height,
 			cropping: true,
@@ -127,7 +127,7 @@ export default function Profile({ navigation }) {
 					iconName={"ios-log-out"}
 					iconStyle={{ marginLeft: 15 }}
 					onPress={() => {
-						console.log("Login Button");
+						console.log("Logout Button");
 						setPressed(true);
 					}}
 					customStyle={{
@@ -158,8 +158,8 @@ const styles = StyleSheet.create({
 		position: "absolute",
 		height: 40,
 		width: 40,
-		right: 20,
-		bottom: 15,
+		right: 7,
+		bottom: 10,
 		borderRadius: 20,
 		justifyContent: "center",
 		alignItems: "center",

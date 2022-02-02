@@ -9,8 +9,10 @@ import DetailsScreen from "./DetailsScreen";
 import AddToShelf from "./AddToShelf";
 import Feed from "./Feed";
 import Settings from "./Settings";
+import FeedDetails from "./FeedDetails";
 
 export {
+	FeedDetails,
 	AddToShelf,
 	BookShelf,
 	Feed,

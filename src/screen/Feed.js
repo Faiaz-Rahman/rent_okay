@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { COLORS, DIM, BrowseBooks } from "../constants";
 import { Header, Card } from "../components";
 
-export default function Feed() {
+export default function Feed({ navigation }) {
 	const [searchBoxVisible, setSearchBoxVisible] = useState(false);
 	const [searchText, setSearchText] = useState();
 
@@ -23,7 +23,15 @@ export default function Feed() {
 				scrollEventThrottle={1}
 			>
 				{BrowseBooks.map((val, index) => {
-					return <Card key={index} val={val} onPress={() => {}} />;
+					return (
+						<Card
+							key={index}
+							val={val}
+							onPress={() => {
+								navigation.navigate("feedDetails", val);
+							}}
+						/>
+					);
 				})}
 			</ScrollView>
 		</View>

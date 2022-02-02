@@ -80,13 +80,21 @@ export default function RegisterScreen() {
 				}}
 				validationSchema={validationSchema}
 			>
-				{({ handleSubmit, handleChange, values, errors, touched }) => (
+				{({
+					handleSubmit,
+					handleChange,
+					values,
+					errors,
+					touched,
+					handleBlur,
+				}) => (
 					<>
 						<CustomTextInput
 							text="Enter Your Full Name"
 							customStyle={styles.custom}
 							iconName="create-sharp"
 							onChangeText={handleChange("name")}
+							onBlur={handleBlur("name")}
 						/>
 						{errors.name && touched.name && (
 							<ErrorComponent error={errors.name} />
@@ -97,15 +105,20 @@ export default function RegisterScreen() {
 							customStyle={styles.custom}
 							keyboardType="numeric"
 							onChangeText={handleChange("books_count")}
+							onBlur={handleBlur("books_count")}
 						/>
 						{errors.books_count && touched.books_count && (
-							<ErrorComponent error={errors.books_count} />
+							<ErrorComponent
+								error={errors.books_count}
+								customContainerStyle={{ marginBottom: 4 }}
+							/>
 						)}
 						<CustomTextInput
 							text="Email Address"
 							iconName="mail"
 							customStyle={styles.custom}
 							onChangeText={handleChange("email")}
+							onBlur={handleBlur("email")}
 						/>
 						{errors.email && touched.email && (
 							<ErrorComponent error={errors.email} />
@@ -115,6 +128,7 @@ export default function RegisterScreen() {
 							iconName="location"
 							customStyle={styles.custom}
 							onChangeText={handleChange("address")}
+							onBlur={handleBlur("address")}
 						/>
 						{errors.address && touched.address && (
 							<ErrorComponent error={errors.address} />
@@ -125,6 +139,7 @@ export default function RegisterScreen() {
 							customStyle={styles.custom}
 							passEntry
 							onChangeText={handleChange("pass")}
+							onBlur={handleBlur("pass")}
 						/>
 						{errors.pass && touched.pass && (
 							<ErrorComponent error={errors.pass} />
@@ -135,6 +150,7 @@ export default function RegisterScreen() {
 							customStyle={styles.custom}
 							passEntry
 							onChangeText={handleChange("confPass")}
+							onBlur={handleBlur("confPass")}
 						/>
 						{errors.confPass && touched.confPass && (
 							<ErrorComponent error={errors.confPass} />
@@ -162,7 +178,7 @@ const styles = StyleSheet.create({
 		paddingBottom: DIM.height * 0.1,
 	},
 	custom: {
-		marginBottom: 12,
+		marginBottom: 13,
 	},
 	header: {
 		fontSize: 35,

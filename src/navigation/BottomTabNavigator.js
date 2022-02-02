@@ -8,6 +8,7 @@ import { COLORS, DIM } from "../constants";
 
 import BooksNavigator from "./BooksNavigator";
 import ShelfNavigator from "./ShelfNavigator";
+import FeedsNavigator from "./FeedsNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,8 +31,8 @@ const BottomTabNavigator = () => {
 			}}
 		>
 			<Tab.Screen
-				name="feed"
-				component={Feed}
+				name="__feed"
+				component={FeedsNavigator}
 				options={{
 					tabBarIcon: ({ focused }) => {
 						return (

@@ -173,9 +173,9 @@ const styles = StyleSheet.create({
 	},
 	subTitle: {
 		fontSize: 19,
-		color: COLORS.black,
+		color: "slategrey",
 		fontWeight: "600",
-		letterSpacing: 0.2,
+		letterSpacing: 0.1,
 	},
 	container: {
 		flex: 1,
