@@ -586,7 +586,7 @@ const styles = StyleSheet.create({
 	},
 	datePicker: {
 		height: DIM.height * 0.1,
-		width: DIM.width * 0.45,
+		width: DIM.width * 0.48,
 		backgroundColor: COLORS.slate,
 		alignItems: "center",
 		paddingLeft: 20,
@@ -611,13 +611,13 @@ const styles = StyleSheet.create({
 	},
 	timePicker: {
 		height: DIM.height * 0.1,
-		width: DIM.width * 0.34,
+		width: DIM.width * 0.345,
 		backgroundColor: COLORS.slate,
 		alignItems: "center",
 		paddingLeft: 20,
 		borderRadius: 10,
 		flexDirection: "row",
-		marginLeft: DIM.width * 0.06,
+		marginLeft: DIM.width * 0.031,
 	},
 	qualityError: {
 		color: COLORS.primary,
